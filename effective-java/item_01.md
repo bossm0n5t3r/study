@@ -22,6 +22,47 @@ public static Boolean valueOf(boolean b) {
 
 정적 팩터리는 이름만 잘 지으면 반환될 객체의 특성을 쉽게 묘사할 수 있다.
 
+```java
+package com.example.demoeffectivejava.item01;
+
+import java.math.BigInteger;
+import java.util.Random;
+
+public class Foo {
+    public static void main(String[] args) {
+        BigInteger primeByConstructor = new BigInteger(3, 100, new Random());
+        System.out.println(primeByConstructor);
+        BigInteger primeByStaticFactoryMethod = BigInteger.probablePrime(3, new Random());
+        System.out.println(primeByStaticFactoryMethod);
+    }
+}
+```
+
+```java
+public BigInteger(int bitLength, int certainty, Random rnd) {
+        BigInteger prime;
+
+        if (bitLength < 2)
+            throw new ArithmeticException("bitLength < 2");
+        prime = (bitLength < SMALL_PRIME_THRESHOLD
+                                ? smallPrime(bitLength, certainty, rnd)
+                                : largePrime(bitLength, certainty, rnd));
+        signum = 1;
+        mag = prime.mag;
+    }
+```
+
+```java
+public static BigInteger probablePrime(int bitLength, Random rnd) {
+        if (bitLength < 2)
+            throw new ArithmeticException("bitLength < 2");
+
+        return (bitLength < SMALL_PRIME_THRESHOLD ?
+                smallPrime(bitLength, DEFAULT_PRIME_CERTAINTY, rnd) :
+                largePrime(bitLength, DEFAULT_PRIME_CERTAINTY, rnd));
+    }
+```
+
 하나의 시그니처로는 생성자를 하나만 만들 수 있다.
 
 입력 매개변수들의 순서를 다르게 한 생성자를 추가하는 식으로 이 제한을 피해볼 수도 있지만, 좋지 않은 발상이다.
@@ -30,6 +71,6 @@ public static Boolean valueOf(boolean b) {
 
 이름을 가질 수 있는 정적 팩터리 메서드에는 이런 제약이 없다.
 
-한 클래스에 시그니처가 같은 생성자가 여러 개 필요 할 것 같으면, 생성자를 정적 팩터리 메서드로 바꾸고 각각의 차이를 잘 드러내는 이름을 지어주자.
+한 클래스에 시그니처가 같은 생성자가 여러 개 필요 할 것 같으면,
 
-### 두 번째, 호출될 때마다 인스턴스를 새로 생성하지 않아도 된다.
+생성자를 정적 팩터리 메서드로 바꾸고 각각의 차이를 잘 드러내는 이름을 지어주자.
