@@ -17,7 +17,12 @@ export class CatsController {
   }
 
   @Get('RequestObject')
-  findAll(@Req() request: Request): string {
+  requestObject(@Req() request: Request): string {
     return 'This action returns all cats';
+  }
+
+  @Get('ab*cd')
+  wildcard() {
+    return 'This route uses a wildcard';
   }
 }
