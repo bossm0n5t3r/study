@@ -6,7 +6,7 @@ export class CatsController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
+  getMeow(): string {
     return this.appService.getMeow();
   }
 }
