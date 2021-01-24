@@ -1,4 +1,13 @@
-import { Controller, Get, Header, HttpCode, Post, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Header,
+  HttpCode,
+  Post,
+  Query,
+  Redirect,
+  Req,
+} from '@nestjs/common';
 import { AppService } from '../app.service';
 import { Request } from 'express';
 
@@ -37,5 +46,13 @@ export class CatsController {
   @Header('Content-Type', 'application/json')
   header() {
     return 'This action adds a new cat';
+  }
+
+  @Get('docs')
+  @Redirect('https://docs.nestjs.com', 302)
+  getDocs(@Query('version') version) {
+    if (version && version === '5') {
+      return { url: 'https://docs.nestjs.com/v5/' };
+    }
   }
 }
