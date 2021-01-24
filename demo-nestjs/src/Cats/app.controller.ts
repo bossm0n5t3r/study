@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, Post, Req } from '@nestjs/common';
+import { Controller, Get, Header, HttpCode, Post, Req } from '@nestjs/common';
 import { AppService } from '../app.service';
 import { Request } from 'express';
 
@@ -29,6 +29,13 @@ export class CatsController {
   @Post('StatusCode')
   @HttpCode(204)
   statusCode(): string {
+    return 'This action adds a new cat';
+  }
+
+  @Post('Header')
+  @Header('Cache-Control', 'none')
+  @Header('Content-Type', 'application/json')
+  header() {
     return 'This action adds a new cat';
   }
 }
