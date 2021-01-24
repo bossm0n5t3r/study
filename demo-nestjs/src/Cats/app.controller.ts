@@ -7,7 +7,6 @@ export class CatsController {
   constructor(private readonly appService: AppService) {}
 
   @Post()
-  @HttpCode(204)
   create(): string {
     return 'This action adds a new cat';
   }
@@ -25,5 +24,11 @@ export class CatsController {
   @Get('ab*cd')
   wildcard() {
     return 'This route uses a wildcard';
+  }
+
+  @Post('StatusCode')
+  @HttpCode(204)
+  statusCode(): string {
+    return 'This action adds a new cat';
   }
 }
