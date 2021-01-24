@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req } from '@nestjs/common';
+import { Controller, Get, HttpCode, Post, Req } from '@nestjs/common';
 import { AppService } from '../app.service';
 import { Request } from 'express';
 
@@ -7,6 +7,7 @@ export class CatsController {
   constructor(private readonly appService: AppService) {}
 
   @Post()
+  @HttpCode(204)
   create(): string {
     return 'This action adds a new cat';
   }
