@@ -3,6 +3,7 @@ import {
   Get,
   Header,
   HttpCode,
+  Param,
   Post,
   Query,
   Redirect,
@@ -54,5 +55,11 @@ export class CatsController {
     if (version && version === '5') {
       return { url: 'https://docs.nestjs.com/v5/' };
     }
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string): string {
+    // console.log(id);
+    return `This action returns a #${id} cat`;
   }
 }
