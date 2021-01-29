@@ -57,9 +57,14 @@ export class CatsController {
     }
   }
 
-  @Get(':id')
+  @Get('params/:id')
   findOne(@Param('id') id: string): string {
     // console.log(id);
     return `This action returns a #${id} cat`;
+  }
+
+  @Get('async')
+  async findAll(): Promise<any[]> {
+    return [];
   }
 }
