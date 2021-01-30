@@ -11,17 +11,23 @@ import {
 } from '@nestjs/common';
 import { AppService } from '../app.service';
 import { Request } from 'express';
+import { Body } from '@nestjs/common';
+import { CreateCatDto } from '../dto/Cats/create-cat.dto';
+import { CatsService } from '../service/cats.service';
 
 @Controller('Cats')
 export class CatsController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly catsService: CatsService,
+  ) {}
 
-  @Post()
-  create(): string {
+  @Post('CreateCatWithOutDto')
+  createCatWithOutDto(): string {
     return 'This action adds a new cat';
   }
 
-  @Get()
+  @Get('GetMeow')
   getMeow(): string {
     return this.appService.getMeow();
   }
@@ -66,5 +72,11 @@ export class CatsController {
   @Get('async')
   async findAll(): Promise<any[]> {
     return [];
+  }
+
+  @Post('CreateCatWithDto')
+  async createCatWithDto(@Body() createCatDto: CreateCatDto): Promise<string> {
+    const result: string = this.catsService.createCats(createCatDto);
+    return result;
   }
 }
