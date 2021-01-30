@@ -33,6 +33,7 @@ export class CatsController {
   }
 
   @Get('RequestObject')
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   requestObject(@Req() request: Request): string {
     return 'This action returns all cats';
   }
