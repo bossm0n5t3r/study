@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class DemoEffectiveKotlinApplication
 
 fun main(args: Array<String>) {
-	runApplication<DemoEffectiveKotlinApplication>(*args)
+    runApplication<DemoEffectiveKotlinApplication>(*args)
 }
