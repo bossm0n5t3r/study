@@ -5,25 +5,25 @@ import kotlin.reflect.KClass
 class Sample {
     companion object {
         @JvmStatic
-        @ExceptionTest([ ArithmeticException::class ])
+        @ExceptionTest(ArithmeticException::class)
         fun m1() {
             var i = 0
             i /= i
         }
 
         @JvmStatic
-        @ExceptionTest([ ArithmeticException::class ])
+        @ExceptionTest(ArithmeticException::class)
         fun m2() {
             val a = IntArray(0)
             val i = a[1]
         }
 
         @JvmStatic
-        @ExceptionTest([ ArithmeticException::class ])
+        @ExceptionTest(ArithmeticException::class)
         fun m3() {}
 
         @JvmStatic
-        @ExceptionTest([ IndexOutOfBoundsException::class, NullPointerException::class ])
+        @ExceptionTest(IndexOutOfBoundsException::class, NullPointerException::class)
         fun doublyBad() {
             val n: String? = null
             println(n!!)
@@ -44,7 +44,7 @@ fun main() {
             } catch (wrappedEx: Throwable) {
                 val exc = wrappedEx.cause
                 val oldPassed = passed
-                val excTypes: Array<KClass<out Throwable>> = m.getAnnotation(ExceptionTest::class.java).value
+                val excTypes: Array<out KClass<out Throwable>> = m.getAnnotation(ExceptionTest::class.java).value
                 for (excType in excTypes) {
                     if (excType.isInstance(exc)) {
                         passed++

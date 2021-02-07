@@ -4,4 +4,4 @@ import kotlin.reflect.KClass
 
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION)
-annotation class ExceptionTest(val value: Array<KClass<out Throwable>>)
+annotation class ExceptionTest(vararg val value: KClass<out Throwable>)
