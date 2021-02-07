@@ -6,5 +6,4 @@ import kotlin.reflect.KClass
 @java.lang.annotation.Repeatable(ExceptionTestContainer::class)
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION)
-@Repeatable
 annotation class ExceptionTest(val value: KClass<out Throwable>)
