@@ -4,13 +4,13 @@ import java.util.Arrays
 import java.util.EnumMap
 import java.util.stream.Collectors
 
-
 enum class Phase {
     SOLID, LIQUID, GAS, PLASMA;
 }
 
 enum class Transition(
-    val from: Phase, val to: Phase
+    val from: Phase,
+    val to: Phase
 ) {
     MELT(Phase.SOLID, Phase.LIQUID),
     FREEZE(Phase.LIQUID, Phase.SOLID),
@@ -25,7 +25,7 @@ enum class Transition(
         private val m: EnumMap<Phase, MutableMap<Phase, Transition>> = Arrays.stream(values())
             .collect(
                 Collectors.groupingBy(
-                    { t : Transition -> t.from },
+                    { t: Transition -> t.from },
                     { EnumMap(Phase::class.java) },
                     Collectors.toMap(
                         { t -> t.to },
