@@ -68,7 +68,7 @@ for (s in args) frequencyTable.merge(s, 1, Integer::sum)
 
 ## 메서드 참조의 유형과 같은 기능을 하는 람다
 
-1. 정적
+### 1. 정적
 
 가장 흔한 유형이다.
 
@@ -77,7 +77,7 @@ for (s in args) frequencyTable.merge(s, 1, Integer::sum)
 val referenceToAStaticMethod = { str: String -> Integer.parseInt(str) }
 ```
 
-2. 한정적 (인스턴스) 참조
+### 2. 한정적 (인스턴스) 참조
 
 근본적으로 정적 참조와 비슷하다.
 
@@ -89,7 +89,7 @@ val then = Instant.now()
 val referenceToAnInstanceMethodOfAParticularObject = { t: Instant -> then.isAfter(t) }
 ```
 
-3. 비한정적 (인스턴스) 참조
+### 3. 비한정적 (인스턴스) 참조
 
 함수 객체를 적용하는 시점에 수신 객체를 알려준다.
 
@@ -104,14 +104,14 @@ val referenceToAnInstanceMethodOfAParticularObject = { t: Instant -> then.isAfte
 val referenceToAnInstanceMethodOfAnArbitraryObjectOfAParticularType = { str: String -> str.toLowerCase() }
 ```
 
-4. 클래스 생성자
+### 4. 클래스 생성자
 
 ```kotlin
 // 클래스 생성자를 가리키는 메서드 참조 유형
 val referenceToAConstructor = { TreeMap<String, Int>() }
 ```
 
-5. 배열생성자
+### 5. 배열생성자
 
 ```kotlin
 // 배열 생성자를 가리키는 메서드 참조 유형
