@@ -118,6 +118,42 @@ val referenceToAConstructor = { TreeMap<String, Int>() }
 val referenceToAArrayConstructor = { len: Int -> IntArray(len) }
 ```
 
+## 람다로는 불가능하나 메서드 참조로는 가능한 유일한 예
+
+람다로는 불가능하나 메서드 참조로는 가능한 유일한 예는 바로 `제네릭 함수 타입`(generic function type)구현이다.
+
+아래는 [자바 명세의 예제 9.9-2](https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.9)를 번역한 글이다.
+
+---
+
+함수형 인터페이스의 추상 메서드가 제네릭일 수 있듯이 함수 타입도 제네릭일 수 있다.
+
+다음의 인터페이스 계층구조를 생각해보자.
+
+```java
+interface G1 {
+  <E extends Exception> Object m() throws E;
+}
+
+interface G2 {
+  <F extends Exception> String m() throws Exception;
+}
+
+interface G extends G1, G2 {}
+```
+
+이때 함수형 인터페이스 G를 함수 타입으로 표현하면 다음과 같다.
+
+`<F extends Exception> () -> String throws F`
+
+이처럼 함수형 인터페이스를 위한 제네릭 함수 타입은 메서드 참조 표현식으로는
+
+구현할 수 있지만, 람다식으로는 불가능하다.
+
+제네릭 람다식이라는 문법이 존재하지 않기 때문이다.
+
+---
+
 ## 핵심 정리
 
 메서드 참조는 람다의 간단명료한 대안이 될 수 있다.
