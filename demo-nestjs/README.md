@@ -1,5 +1,9 @@
 # demo-nestjs
 
+[NestJS](https://nestjs.com/)를 연습하는 공간입니다.
+
+[NestJS docs](https://docs.nestjs.com/)의 순서대로 기록을 남길 예정입니다.
+
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
