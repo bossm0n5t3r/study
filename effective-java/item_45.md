@@ -360,7 +360,7 @@ alphabetize 메서드도 스트림을 사용해 다르게 구현할 수 있다.
 -> 메르센 수는 2^n - 1, for some integer n
 -> 메르센 소수는 2^p - 1, where p is a prime 형태의 소수
 
-다음 코드는 스트림을 반환하는 메서드이고, BigInteger의 정적 멤버들은 정적 임포트하여 사용한다고 가정한다.
+다음 코드는 스트림을 반환하는 메서드다.
 
 ```kotlin
 class MersennePrimes {
