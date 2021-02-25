@@ -3,8 +3,11 @@
 ## Effective Java
 
 - [effective-java](./effective-java)
-- [demo-effective-java](./demo-effective-java)
+
+### Source Code
+
 - [demo-effective-kotlin](./demo-effective-kotlin)
+- [demo-effective-java](./demo-effective-java)
 
 ## Gradle Dependencies
 
