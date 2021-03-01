@@ -35,6 +35,18 @@ tasks.withType<KotlinCompile> {
 	}
 }
 
+tasks.compileKotlin {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
+
+tasks.compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
+
 val ktlint by configurations.creating
 
 dependencies {
