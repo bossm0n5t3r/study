@@ -3,7 +3,6 @@ package com.example.demoeffectivekotlin.item43
 import java.time.Instant
 import java.util.TreeMap
 
-
 fun main() {
     // 정적 메서드 참조 유형
     val referenceToAStaticMethod = { str: String -> Integer.parseInt(str) }
