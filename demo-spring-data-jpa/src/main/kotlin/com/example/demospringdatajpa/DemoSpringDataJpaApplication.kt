@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class DemoSpringDataJpaApplication
 
 fun main(args: Array<String>) {
-	runApplication<DemoSpringDataJpaApplication>(*args)
+    runApplication<DemoSpringDataJpaApplication>(*args)
 }
