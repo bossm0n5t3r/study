@@ -4,10 +4,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CatsModule } from './cats/cats.module';
 import { DatabaseModule } from './config/database/database.module';
-import { UserHttpModule } from './users/users-http.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
-  imports: [DatabaseModule, CatsModule, UserHttpModule],
+  imports: [DatabaseModule, CatsModule, UsersModule],
   controllers: [AppController],
   providers: [AppService],
 })
