@@ -10,6 +10,10 @@ export interface DatabaseData {
   PASSWORD: string;
 }
 
+const localHost = '127.0.0.1';
+const mariaDatabaseDefaultPort = 3306;
+const mongoDatabaseDefaultPort = 27017;
+
 export class DatabaseService {
   private vars: DatabaseData;
 
@@ -19,8 +23,14 @@ export class DatabaseService {
       fs.readFileSync(`${environment}.${dbName}.env`),
     );
 
-    data.HOST = data.HOST !== null ? data.HOST : '127.0.0.1';
-    data.PORT = data.PORT !== null ? parseInt(data.PORT) : 3306;
+    data.HOST = data.HOST !== null ? data.HOST : localHost;
+
+    const defaultPort =
+      data.TYPE === 'mariadb'
+        ? mariaDatabaseDefaultPort
+        : mongoDatabaseDefaultPort;
+
+    data.PORT = data.PORT !== null ? parseInt(data.PORT) : defaultPort;
 
     this.vars = data as DatabaseData;
   }
