@@ -1,16 +1,15 @@
 import { Module, Global, DynamicModule } from '@nestjs/common';
 import { DatabaseService } from './database.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import {
-  mariaDatabaseEntities,
-  mongoDatabaseEntities,
-} from './database.entity';
+import { DATABASE } from '../constants';
 
 const DatabaseOrmModule = (dbName: string): DynamicModule => {
   const config = new DatabaseService(dbName).read();
 
   const entities =
-    config.TYPE == 'mariadb' ? mariaDatabaseEntities : mongoDatabaseEntities;
+    config.TYPE == 'mariadb'
+      ? DATABASE.MARIA_DB.ENTITIES
+      : DATABASE.MONGO_DB.ENTITIES;
 
   return TypeOrmModule.forRoot({
     type: config.TYPE,

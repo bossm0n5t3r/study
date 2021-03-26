@@ -1,5 +1,6 @@
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
+import { DATABASE } from '../constants';
 
 export interface DatabaseData {
   TYPE: 'mariadb' | 'mongodb';
@@ -10,10 +11,6 @@ export interface DatabaseData {
   PASSWORD: string;
 }
 
-const localHost = '127.0.0.1';
-const mariaDatabaseDefaultPort = 3306;
-const mongoDatabaseDefaultPort = 27017;
-
 export class DatabaseService {
   private vars: DatabaseData;
 
@@ -23,12 +20,12 @@ export class DatabaseService {
       fs.readFileSync(`${environment}.${dbName}.env`),
     );
 
-    data.HOST = data.HOST !== null ? data.HOST : localHost;
+    data.HOST = data.HOST !== null ? data.HOST : DATABASE.LOCAL_HOST;
 
     const defaultPort =
       data.TYPE === 'mariadb'
-        ? mariaDatabaseDefaultPort
-        : mongoDatabaseDefaultPort;
+        ? DATABASE.MARIA_DB.DEFAULT_PORT
+        : DATABASE.MONGO_DB.DEFAULT_PORT;
 
     data.PORT = data.PORT !== null ? parseInt(data.PORT) : defaultPort;
 
