@@ -25,7 +25,7 @@ const DatabaseOrmModule = (dbName: string): DynamicModule => {
       break;
     }
     case 'mongodb': {
-      const uri = `mongodb://${config.HOST}:${config.PORT}/${config.NAME}`;
+      const uri = `${dbName}://${config.HOST}:${config.PORT}/${config.NAME}`;
       resultDatabaseOrmModule = MongooseModule.forRoot(uri);
     }
   }
