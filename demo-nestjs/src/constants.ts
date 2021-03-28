@@ -1,4 +1,4 @@
-import { User } from '../users/entities/user.entity';
+import { User } from './users/entities/user.entity';
 
 export const DATABASE = {
   LOCAL_HOST: '127.0.0.1',
