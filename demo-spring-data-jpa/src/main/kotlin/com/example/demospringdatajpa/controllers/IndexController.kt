@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping
 class IndexController {
     @GetMapping("/")
     fun index(model: Model): String {
-        model.addAttribute("name", "zhoon")
         return "index"
     }
 }
