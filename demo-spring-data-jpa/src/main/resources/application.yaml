@@ -1,3 +1,11 @@
 spring:
+  datasource:
+    hikari:
+      auto-commit: true
+      jdbc-url: jdbc:mariadb://localhost:3333/demo_spring_data_jpa
+      username: root
+      password: root
+      connection-test-query: select 'connection'
+      driver-class-name: org.mariadb.jdbc.Driver
   thymeleaf:
     cache: false
