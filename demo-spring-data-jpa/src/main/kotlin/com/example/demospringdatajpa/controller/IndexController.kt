@@ -1,4 +1,4 @@
-package com.example.demospringdatajpa.controllers
+package com.example.demospringdatajpa.controller
 
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model

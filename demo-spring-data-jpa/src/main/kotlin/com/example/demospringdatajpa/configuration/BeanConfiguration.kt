@@ -1,4 +1,4 @@
-package com.example.demospringdatajpa.configurations
+package com.example.demospringdatajpa.configuration
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource

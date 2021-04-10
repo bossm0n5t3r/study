@@ -1,4 +1,4 @@
-package com.example.demospringdatajpa.controllers
+package com.example.demospringdatajpa.controller
 
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -9,18 +9,18 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.view
 
 @WebMvcTest
-class SignUpControllerTest {
+class IndexControllerTest {
     @Autowired
     lateinit var mvc: MockMvc
 
     @Test
-    fun `sign-up이 리턴된다`() {
-        val signUp = "sign-up"
+    fun `index가 리턴된다`() {
+        val index = "index"
 
         mvc.perform(
-            get("/SignUp")
+            get("/")
         )
             .andExpect(status().isOk)
-            .andExpect(view().name(signUp))
+            .andExpect(view().name(index))
     }
 }
