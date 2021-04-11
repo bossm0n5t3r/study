@@ -43,6 +43,9 @@ dependencies {
     // HikariCP
     implementation("com.zaxxer:HikariCP:4.0.3")
 
+    implementation("commons-codec:commons-codec:1.15")
+    implementation("com.google.guava:guava:30.1.1-jre")
+
     // thymeleaf
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 
