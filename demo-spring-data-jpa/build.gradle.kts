@@ -6,6 +6,8 @@ plugins {
     war
     kotlin("jvm") version "1.4.31"
     kotlin("plugin.spring") version "1.4.31"
+    kotlin("plugin.allopen") version "1.4.31"
+    kotlin("plugin.noarg") version "1.4.31"
 }
 
 group = "com.example"
@@ -14,6 +16,14 @@ java.sourceCompatibility = JavaVersion.VERSION_15
 
 repositories {
     mavenCentral()
+}
+
+allOpen {
+    annotation("javax.persistence.Entity")
+}
+
+noArg {
+    annotation("javax.persistence.Entity")
 }
 
 dependencies {
