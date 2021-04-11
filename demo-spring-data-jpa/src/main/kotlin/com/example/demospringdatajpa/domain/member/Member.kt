@@ -23,11 +23,6 @@ class Member(
     @Column
     var name: String = name
 
-    private fun encryptPassword(email: String, password: String, name: String): String {
-        require(password.isNotEmpty())
-        return Hex.encodeHexString(Hashing.sha256().hashString("$email$password$name", Charsets.UTF_8).asBytes())
-    }
-
     fun setPassword(newPassword: String): Member {
         this.password = encryptPassword(this.email, newPassword, this.name)
         return this
@@ -35,5 +30,10 @@ class Member(
 
     fun verifyPassword(otherPassword: String): Boolean {
         return this.password == encryptPassword(this.email, otherPassword, this.name)
+    }
+
+    private fun encryptPassword(email: String, password: String, name: String): String {
+        require(password.isNotEmpty())
+        return Hex.encodeHexString(Hashing.sha256().hashString("$email$password$name", Charsets.UTF_8).asBytes())
     }
 }
