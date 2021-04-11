@@ -9,28 +9,28 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "member_info")
-class Member() : BaseEntity<Int>() {
+class Member(
+    email: String,
+    password: String,
+    name: String
+) : BaseEntity<Int>() {
     @Column
-    lateinit var email: String
-        protected set
+    var email: String = email
 
     @Column
-    lateinit var password: String
-        protected set
+    var password: String = encryptPassword(email, password, name)
 
     @Column
-    lateinit var name: String
-        protected set
-
-    constructor(email: String, password: String, name: String) : this() {
-        this.email = email
-        this.password = encryptPassword(email, password, name)
-        this.name = name
-    }
+    var name: String = name
 
     private fun encryptPassword(email: String, password: String, name: String): String {
         require(password.isNotEmpty())
         return Hex.encodeHexString(Hashing.sha256().hashString("$email$password$name", Charsets.UTF_8).asBytes())
+    }
+
+    fun setPassword(newPassword: String): Member {
+        this.password = encryptPassword(this.email, newPassword, this.name)
+        return this
     }
 
     fun verifyPassword(otherPassword: String): Boolean {

@@ -39,4 +39,36 @@ class MemberRepositoryTest {
         assertThat(member.password).isNotEqualTo(password)
         assertThat(member.verifyPassword(password)).isTrue
     }
+
+    @Test
+    fun updatePassword() {
+        // given
+        val email = "test@test.test"
+        val oldPassword = "password"
+        val name = "name"
+
+        memberRepository.save(
+            Member(
+                email = email,
+                password = oldPassword,
+                name = name
+            )
+        )
+
+        val members = memberRepository.findAll()
+
+        assertThat(members).isNotEmpty
+        assertThat(members.size).isEqualTo(1)
+
+        val member = members[0]
+        assertThat(member.verifyPassword(oldPassword)).isTrue
+
+        // when
+        val newPassword = "new_password"
+        member.setPassword(newPassword)
+
+        // then
+        assertThat(member.verifyPassword(oldPassword)).isFalse
+        assertThat(member.verifyPassword(newPassword)).isTrue
+    }
 }
