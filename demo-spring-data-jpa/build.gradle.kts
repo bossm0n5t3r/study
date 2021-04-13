@@ -1,13 +1,21 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+val querydslVersion: String by project
+val hikariVersion: String by project
+val commonsCodecVersion: String by project
+val guavaVersion: String by project
+
 plugins {
+    val kotlinVersion = "1.4.31"
     id("org.springframework.boot") version "2.4.4"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     war
-    kotlin("jvm") version "1.4.31"
-    kotlin("plugin.spring") version "1.4.31"
-    kotlin("plugin.allopen") version "1.4.31"
-    kotlin("plugin.noarg") version "1.4.31"
+    kotlin("jvm") version kotlinVersion
+    kotlin("plugin.spring") version kotlinVersion
+    kotlin("plugin.jpa") version kotlinVersion
+    kotlin("plugin.allopen") version kotlinVersion
+    kotlin("plugin.noarg") version kotlinVersion
+    kotlin("kapt") version kotlinVersion
 }
 
 group = "com.example"
@@ -38,13 +46,17 @@ dependencies {
     // jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.data:spring-data-envers")
+    // Querydsl
+    implementation("com.querydsl:querydsl-apt:$querydslVersion")
+    implementation("com.querydsl:querydsl-jpa:$querydslVersion")
+    kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
     // mariadb
     implementation("org.mariadb.jdbc:mariadb-java-client")
     // HikariCP
-    implementation("com.zaxxer:HikariCP:4.0.3")
+    implementation("com.zaxxer:HikariCP:$hikariVersion")
 
-    implementation("commons-codec:commons-codec:1.15")
-    implementation("com.google.guava:guava:30.1.1-jre")
+    implementation("commons-codec:commons-codec:$commonsCodecVersion")
+    implementation("com.google.guava:guava:$guavaVersion")
 
     // thymeleaf
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
