@@ -1,6 +1,7 @@
 package com.example.demospringdatajpa.domain.member
 
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -12,13 +13,11 @@ class MemberRepositoryTest {
     @Autowired
     lateinit var memberRepository: MemberRepository
 
-    @Test
-    fun createMember() {
-        // given
-        val email = "test@test.test"
-        val password = "password"
-        val name = "name"
+    private val email = "test@test.test"
+    private val password = "password"
+    private val name = "name"
 
+    private fun createMember() {
         memberRepository.save(
             Member(
                 email = email,
@@ -26,6 +25,20 @@ class MemberRepositoryTest {
                 name = name
             )
         )
+    }
+
+    private fun verifyMember(member: Member?) {
+        assertThat(member).isNotNull
+        assertThat(member!!.email).isEqualTo(email)
+        assertThat(member.name).isEqualTo(name)
+        assertThat(member.password).isNotEqualTo(password)
+        assertThat(member.verifyPassword(password)).isTrue
+    }
+
+    @Test
+    fun findAll() {
+        // given
+        createMember()
 
         // when
         val members = memberRepository.findAll()
@@ -34,10 +47,32 @@ class MemberRepositoryTest {
         assertThat(members).isNotEmpty
         assertThat(members.size).isEqualTo(1)
         val member = members[0]
-        assertThat(member.email).isEqualTo(email)
-        assertThat(member.name).isEqualTo(name)
-        assertThat(member.password).isNotEqualTo(password)
-        assertThat(member.verifyPassword(password)).isTrue
+
+        verifyMember(member)
+    }
+
+    @Test
+    fun findByEmail() {
+        // given
+        createMember()
+
+        // when
+        val member = memberRepository.findByEmail(email)
+
+        // then
+        verifyMember(member)
+    }
+
+    @Test
+    fun findByName() {
+        // given
+        createMember()
+
+        // when
+        val member = memberRepository.findByName(name)
+
+        // then
+        verifyMember(member)
     }
 
     @Test
@@ -70,5 +105,10 @@ class MemberRepositoryTest {
         // then
         assertThat(member.verifyPassword(oldPassword)).isFalse
         assertThat(member.verifyPassword(newPassword)).isTrue
+    }
+
+    @AfterEach
+    fun cleanUp() {
+        memberRepository.deleteAll()
     }
 }
