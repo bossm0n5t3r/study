@@ -10,18 +10,16 @@ import javax.persistence.Table
 @Entity
 @Table(name = "member_info")
 class Member(
-    email: String,
+    @Column(name = "email", nullable = false, unique = true, updatable = true)
+    var email: String,
+
     password: String,
-    name: String
+
+    @Column(name = "name", nullable = false, updatable = true)
+    var name: String
 ) : BaseEntity<Int>() {
-    @Column
-    var email: String = email
-
-    @Column
+    @Column(name = "password", nullable = false, updatable = true)
     var password: String = encryptPassword(email, password, name)
-
-    @Column
-    var name: String = name
 
     fun setPassword(newPassword: String): Member {
         this.password = encryptPassword(this.email, newPassword, this.name)
