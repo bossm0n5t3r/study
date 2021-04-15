@@ -16,11 +16,13 @@ class MemberRepositorySupportTest {
     @Autowired
     lateinit var memberRepositorySupport: MemberRepositorySupport
 
-    private val email = "test@test.test"
-    private val password = "password"
-    private val name = "name"
+    @Test
+    fun `QuerydslRepositorySupport - findAll`() {
+        // given
+        val email = "test@test.test"
+        val password = "password"
+        val name = "name"
 
-    private fun createMember() {
         memberRepository.save(
             Member(
                 email = email,
@@ -28,9 +30,74 @@ class MemberRepositorySupportTest {
                 name = name
             )
         )
+
+        val newEmail = "new@new.new"
+        val newPassword = "new_password"
+        val newName = "new_name"
+
+        memberRepository.save(
+            Member(
+                email = newEmail,
+                password = newPassword,
+                name = newName
+            )
+        )
+
+        // when
+        val members = memberRepositorySupport.findAll()
+
+        // then
+        assertThat(members).isNotEmpty
+        assertThat(members.size).isEqualTo(2)
+
+        // member
+        val member = members.first()
+
+        assertThat(member.email).isEqualTo(email)
+        assertThat(member.name).isEqualTo(name)
+        assertThat(member.password).isNotEqualTo(password)
+        assertThat(member.verifyPassword(password)).isTrue
+
+        // new member
+        val newMember = members.last()
+
+        assertThat(newMember.email).isEqualTo(newEmail)
+        assertThat(newMember.name).isEqualTo(newName)
+        assertThat(newMember.password).isNotEqualTo(newPassword)
+        assertThat(newMember.verifyPassword(newPassword)).isTrue
     }
 
-    private fun verifyMember(member: Member?) {
+    @Test
+    fun `QuerydslRepositorySupport - findByEmail`() {
+        // given
+        val email = "test@test.test"
+        val password = "password"
+        val name = "name"
+
+        memberRepository.save(
+            Member(
+                email = email,
+                password = password,
+                name = name
+            )
+        )
+
+        val newEmail = "new@new.new"
+        val newPassword = "new_password"
+        val newName = "new_name"
+
+        memberRepository.save(
+            Member(
+                email = newEmail,
+                password = newPassword,
+                name = newName
+            )
+        )
+
+        // when
+        val member = memberRepositorySupport.findByEmail(email)
+
+        // then
         assertThat(member).isNotNull
         assertThat(member!!.email).isEqualTo(email)
         assertThat(member.name).isEqualTo(name)
@@ -39,43 +106,41 @@ class MemberRepositorySupportTest {
     }
 
     @Test
-    fun findAll() {
+    fun `QuerydslRepositorySupport - findByName`() {
         // given
-        createMember()
+        val email = "test@test.test"
+        val password = "password"
+        val name = "name"
 
-        // when
-        val members = memberRepositorySupport.findAll()
+        memberRepository.save(
+            Member(
+                email = email,
+                password = password,
+                name = name
+            )
+        )
 
-        // then
-        assertThat(members).isNotEmpty
-        assertThat(members.size).isEqualTo(1)
-        val member = members[0]
+        val newEmail = "new@new.new"
+        val newPassword = "new_password"
+        val newName = "new_name"
 
-        verifyMember(member)
-    }
-
-    @Test
-    fun findByEmail() {
-        // given
-        createMember()
-
-        // when
-        val member = memberRepositorySupport.findByEmail(email)
-
-        // then
-        verifyMember(member)
-    }
-
-    @Test
-    fun findByName() {
-        // given
-        createMember()
+        memberRepository.save(
+            Member(
+                email = newEmail,
+                password = newPassword,
+                name = newName
+            )
+        )
 
         // when
         val member = memberRepositorySupport.findByName(name)
 
         // then
-        verifyMember(member)
+        assertThat(member).isNotNull
+        assertThat(member!!.email).isEqualTo(email)
+        assertThat(member.name).isEqualTo(name)
+        assertThat(member.password).isNotEqualTo(password)
+        assertThat(member.verifyPassword(password)).isTrue
     }
 
     @Test
