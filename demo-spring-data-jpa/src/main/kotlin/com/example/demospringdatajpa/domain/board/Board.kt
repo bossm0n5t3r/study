@@ -15,8 +15,7 @@ import javax.persistence.Table
 class Board(
     subject: String,
 
-    @Column(name = "content", nullable = false)
-    var content: String,
+    content: String,
 
     @Column(name = "hits", nullable = false, updatable = true)
     var hits: Int? = 0,
@@ -28,15 +27,27 @@ class Board(
     @JoinColumn(name = "member_id", nullable = false, updatable = false)
     var member: Member,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_type_id", nullable = false, updatable = true)
-    var boardType: BoardType
+    boardType: BoardType
 ) : BaseEntity<Int>() {
     @Column(name = "subject", nullable = false)
     var subject: String = subject
 
-    fun updateSubject(newSubject: String): Board {
-        this.subject = newSubject
-        return this
+    @Column(name = "content", nullable = false)
+    var content: String = content
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_type_id", nullable = false, updatable = true)
+    var boardType: BoardType = boardType
+
+    fun updateBoard(updateBoardDto: UpdateBoardDto) {
+        updateBoardDto.subject?.let { this.subject = it }
+        updateBoardDto.content?.let { this.content = it }
+        updateBoardDto.boardType?.let { this.boardType = it }
     }
 }
+
+data class UpdateBoardDto(
+    val subject: String? = null,
+    val content: String? = null,
+    val boardType: BoardType? = null
+)

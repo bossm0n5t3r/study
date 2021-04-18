@@ -20,11 +20,4 @@ class BoardRepositorySupport(
             .where(board.id.eq(boardId))
             .fetchOne()
     }
-
-    fun updateSubject(boardId: Int, newSubject: String) {
-        jpaQueryFactory.update(board)
-            .where(board.id.eq(boardId))
-            .set(board.subject, newSubject)
-            .execute()
-    }
 }

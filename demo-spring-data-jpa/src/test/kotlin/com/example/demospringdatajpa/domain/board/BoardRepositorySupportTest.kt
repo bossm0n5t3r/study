@@ -131,7 +131,9 @@ class BoardRepositorySupportTest {
 
         // when
         val newSubject = "새로운 테스트 제목"
-        board.updateSubject(newSubject)
+        board.updateBoard(
+            UpdateBoardDto(subject = newSubject)
+        )
 
         // then
         val boardId = board.id!!
