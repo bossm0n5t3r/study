@@ -155,6 +155,52 @@ class BoardRepositorySupportTest {
         assertThat(newBoard).isEqualTo(board)
     }
 
+    @Test
+    fun deleteBoard() {
+        // given
+
+        // board
+        val subject = "테스트 제목"
+        val content = "테스트 본문"
+
+        val (member, boardType) = createMemberAndBoardType()
+
+        boardRepository.save(
+            Board(
+                subject = subject,
+                content = content,
+                member = member,
+                boardType = boardType
+            )
+        )
+
+        val newSubject = "새로운 테스트 제목"
+        val newContent = "새로운 테스트 본문"
+        boardRepository.save(
+            Board(
+                subject = newSubject,
+                content = newContent,
+                member = member,
+                boardType = boardType
+            )
+        )
+
+        var boardList = boardRepositorySupport.findAll()
+        assertThat(boardList).isNotEmpty
+        assertThat(boardList.size).isEqualTo(2)
+        val board = boardList.first()
+        val otherBoard = boardList.last()
+
+        // when
+        boardRepository.delete(board)
+
+        // then
+        boardList = boardRepositorySupport.findAll()
+        assertThat(boardList).isNotEmpty
+        assertThat(boardList.size).isEqualTo(1)
+        assertThat(boardList.first()).isEqualTo(otherBoard)
+    }
+
     @AfterEach
     fun cleanUp() {
         boardRepository.deleteAll()
