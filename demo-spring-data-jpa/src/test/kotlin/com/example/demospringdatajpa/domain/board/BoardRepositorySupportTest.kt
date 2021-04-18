@@ -94,8 +94,8 @@ class BoardRepositorySupportTest {
      *      1. 제목 업데이트
      *      2. 본문 업데이트
      *      3. board type 업데이트
-     *      4. hits 클릭 시 업데이트
-     *      5. recommend 추천 버튼 누를 시 업데이트
+     *      4. hits 클릭 시 업데이트 -> service 단계
+     *      5. recommend 추천 버튼 누를 시 업데이트 -> service 단계
      *  삭제
      *      6. 게시물 삭제
      *  조회
@@ -106,7 +106,7 @@ class BoardRepositorySupportTest {
      */
 
     @Test
-    fun updateSubject() {
+    fun updateBoard() {
         // given
 
         // board
@@ -131,8 +131,18 @@ class BoardRepositorySupportTest {
 
         // when
         val newSubject = "새로운 테스트 제목"
+        val newContent = "새로운 테스트 본문"
+        val newBoardTypeName = "새로운 공지"
+        boardTypeRepository.save(
+            BoardType(name = newBoardTypeName)
+        )
+        val newBoardType = boardTypeRepository.findByName(newBoardTypeName)
         board.updateBoard(
-            UpdateBoardDto(subject = newSubject)
+            UpdateBoardDto(
+                subject = newSubject,
+                content = newContent,
+                boardType = newBoardType
+            )
         )
 
         // then
@@ -140,6 +150,8 @@ class BoardRepositorySupportTest {
         val newBoard = boardRepositorySupport.findById(boardId)
         assertThat(newBoard).isNotNull
         assertThat(newBoard!!.subject).isEqualTo(newSubject)
+        assertThat(newBoard.content).isEqualTo(newContent)
+        assertThat(newBoard.boardType).isEqualTo(newBoardType)
         assertThat(newBoard).isEqualTo(board)
     }
 
