@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 
 @SpringBootTest
 @Transactional
@@ -22,6 +24,8 @@ class BoardRepositorySupportTest {
     lateinit var boardRepository: BoardRepository
     @Autowired
     lateinit var boardRepositorySupport: BoardRepositorySupport
+    @PersistenceContext
+    lateinit var entityManager: EntityManager
 
     private fun createMemberAndBoardType(): Pair<Member, BoardType> {
         // member
@@ -100,6 +104,42 @@ class BoardRepositorySupportTest {
      *      9. 조회수별 게시물 리스트 조회
      *      10. 추천별 게시물 리스트 조회
      */
+
+    @Test
+    fun updateSubject() {
+        // given
+
+        // board
+        val subject = "테스트 제목"
+        val content = "테스트 본문"
+
+        val (member, boardType) = createMemberAndBoardType()
+
+        boardRepository.save(
+            Board(
+                subject = subject,
+                content = content,
+                member = member,
+                boardType = boardType
+            )
+        )
+
+        val boardList = boardRepositorySupport.findAll()
+        assertThat(boardList).isNotEmpty
+        val board = boardList.first()
+        assertThat(board.subject).isEqualTo(subject)
+
+        // when
+        val boardId = board.id!!
+        val newSubject = "새로운 테스트 제목"
+        boardRepositorySupport.updateSubject(boardId, newSubject)
+
+        // then
+        entityManager.clear()
+        val newBoard = boardRepositorySupport.findById(boardId)
+        assertThat(newBoard).isNotNull
+        assertThat(newBoard!!.subject).isEqualTo(newSubject)
+    }
 
     @AfterEach
     fun cleanUp() {
