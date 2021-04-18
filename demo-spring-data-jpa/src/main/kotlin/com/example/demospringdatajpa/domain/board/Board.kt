@@ -13,8 +13,7 @@ import javax.persistence.Table
 @Entity
 @Table(name = "board_info")
 class Board(
-    @Column(name = "subject", nullable = false)
-    var subject: String,
+    subject: String,
 
     @Column(name = "content", nullable = false)
     var content: String,
@@ -32,4 +31,12 @@ class Board(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_type_id", nullable = false, updatable = true)
     var boardType: BoardType
-) : BaseEntity<Int>()
+) : BaseEntity<Int>() {
+    @Column(name = "subject", nullable = false)
+    var subject: String = subject
+
+    fun updateSubject(newSubject: String): Board {
+        this.subject = newSubject
+        return this
+    }
+}

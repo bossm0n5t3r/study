@@ -130,15 +130,15 @@ class BoardRepositorySupportTest {
         assertThat(board.subject).isEqualTo(subject)
 
         // when
-        val boardId = board.id!!
         val newSubject = "새로운 테스트 제목"
-        boardRepositorySupport.updateSubject(boardId, newSubject)
+        board.updateSubject(newSubject)
 
         // then
-        entityManager.clear()
+        val boardId = board.id!!
         val newBoard = boardRepositorySupport.findById(boardId)
         assertThat(newBoard).isNotNull
         assertThat(newBoard!!.subject).isEqualTo(newSubject)
+        assertThat(newBoard).isEqualTo(board)
     }
 
     @AfterEach
