@@ -4,6 +4,7 @@ import com.example.demospringdatajpa.domain.board.type.BoardType
 import com.example.demospringdatajpa.domain.board.type.BoardTypeRepository
 import com.example.demospringdatajpa.domain.member.Member
 import com.example.demospringdatajpa.domain.member.MemberRepository
+import com.querydsl.core.types.Order
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -27,41 +28,52 @@ class BoardRepositorySupportTest {
     @PersistenceContext
     lateinit var entityManager: EntityManager
 
-    private fun createMemberAndBoardType(): Pair<Member, BoardType> {
+    private val subject = "테스트 제목"
+    private val content = "테스트 본문"
+
+    private fun createMemberListAndBoardType(
+        numberOfMember: Int = 1,
+        numberOfBoardType: Int = 1
+    ): Pair<List<Member>, List<BoardType>> {
         // member
         val email = "test@test.test"
         val password = "password"
         val name = "name"
 
+        for (i in 1..numberOfMember) {
+            memberRepository.save(
+                Member(
+                    email = "$i$email",
+                    password = "$i$password",
+                    name = "$i$name"
+                )
+            )
+        }
+
         // boardType
         val boardTypeName = "공지"
 
-        memberRepository.save(
-            Member(
-                email = email,
-                password = password,
-                name = name
+        for (i in 1..numberOfBoardType) {
+            boardTypeRepository.save(
+                BoardType(name = "$i$boardTypeName")
             )
-        )
-        boardTypeRepository.save(
-            BoardType(name = boardTypeName)
-        )
+        }
 
-        val member = memberRepository.findAll().first()
-        val boardType = boardTypeRepository.findAll().first()
+        val memberList = memberRepository.findAll().toList()
+        val boardType = boardTypeRepository.findAll().toList()
 
-        return Pair(member, boardType)
+        return Pair(memberList, boardType)
     }
 
     @Test
     fun findAll() {
         // given
-
-        // board
-        val subject = "테스트 제목"
-        val content = "테스트 본문"
-
-        val (member, boardType) = createMemberAndBoardType()
+        val numberOfMember = 1
+        val (memberList, boardTypeList) = createMemberListAndBoardType(
+            numberOfMember = numberOfMember
+        )
+        val member = memberList.first()
+        val boardType = boardTypeList.first()
 
         boardRepository.save(
             Board(
@@ -88,32 +100,15 @@ class BoardRepositorySupportTest {
         assertThat(board.recommend).isEqualTo(0)
     }
 
-    /**
-     * TODO 추가 테스트 목록
-     *  업데이트
-     *      1. 제목 업데이트
-     *      2. 본문 업데이트
-     *      3. board type 업데이트
-     *      4. hits 클릭 시 업데이트 -> service 단계
-     *      5. recommend 추천 버튼 누를 시 업데이트 -> service 단계
-     *  삭제
-     *      6. 게시물 삭제
-     *  조회
-     *      7. 회원별 게시물 리스트 조회
-     *      8. board type 별 게시물 리스트 조회
-     *      9. 조회수별 게시물 리스트 조회
-     *      10. 추천별 게시물 리스트 조회
-     */
-
     @Test
     fun updateBoard() {
         // given
-
-        // board
-        val subject = "테스트 제목"
-        val content = "테스트 본문"
-
-        val (member, boardType) = createMemberAndBoardType()
+        val numberOfMember = 1
+        val (memberList, boardTypeList) = createMemberListAndBoardType(
+            numberOfMember = numberOfMember
+        )
+        val member = memberList.first()
+        val boardType = boardTypeList.first()
 
         boardRepository.save(
             Board(
@@ -158,12 +153,12 @@ class BoardRepositorySupportTest {
     @Test
     fun deleteBoard() {
         // given
-
-        // board
-        val subject = "테스트 제목"
-        val content = "테스트 본문"
-
-        val (member, boardType) = createMemberAndBoardType()
+        val numberOfMember = 1
+        val (memberList, boardTypeList) = createMemberListAndBoardType(
+            numberOfMember = numberOfMember
+        )
+        val member = memberList.first()
+        val boardType = boardTypeList.first()
 
         boardRepository.save(
             Board(
@@ -199,6 +194,146 @@ class BoardRepositorySupportTest {
         assertThat(boardList).isNotEmpty
         assertThat(boardList.size).isEqualTo(1)
         assertThat(boardList.first()).isEqualTo(otherBoard)
+    }
+
+    @Test
+    fun `회원별 게시물 리스트 조회`() {
+        val numberOfMember = 3
+        val (memberList, boardTypeList) = createMemberListAndBoardType(
+            numberOfMember = numberOfMember
+        )
+        val boardType = boardTypeList.first()
+
+        memberList.forEach {
+            // 아래 index 가 실제 회원의 board 라는 것을 입증하는 키가 됩니다.
+            val index = it.email[0].toString()
+            boardRepository.save(
+                Board(
+                    subject = "$index$subject",
+                    content = "$index$content",
+                    member = it,
+                    boardType = boardType
+                )
+            )
+        }
+
+        val firstMember = memberList.first()
+        val boardList: List<Board> = boardRepositorySupport.findByMember(firstMember)
+
+        assertThat(boardList).isNotEmpty
+        assertThat(boardList.size).isEqualTo(1)
+
+        // checkingIndex 는 회원의 email 의 첫번째 char 를 통해서 비교하면 됩니다.
+        val checkingIndex = firstMember.email[0]
+        assertThat(boardList[0].subject[0]).isEqualTo(checkingIndex)
+        assertThat(boardList[0].content[0]).isEqualTo(checkingIndex)
+    }
+
+    @Test
+    fun `board type 별 게시물 리스트 조회`() {
+        val numberOfBoardType = 3
+        val (memberList, boardTypeList) = createMemberListAndBoardType(
+            numberOfBoardType = numberOfBoardType
+        )
+
+        val member = memberList.first()
+
+        boardTypeList.forEach {
+            val index = it.name[0].toString()
+            boardRepository.save(
+                Board(
+                    subject = "$index$subject",
+                    content = "$index$content",
+                    member = member,
+                    boardType = it
+                )
+            )
+        }
+
+        val firstBoardType = boardTypeList.first()
+        val boardList: List<Board> = boardRepositorySupport.findByBoardType(firstBoardType)
+
+        assertThat(boardList).isNotEmpty
+        assertThat(boardList.size).isEqualTo(1)
+
+        // checkingIndex 는 boardType 의 name 의 첫번째 char 를 통해서 비교하면 됩니다.
+        val checkingIndex = firstBoardType.name[0]
+        assertThat(boardList[0].subject[0]).isEqualTo(checkingIndex)
+        assertThat(boardList[0].content[0]).isEqualTo(checkingIndex)
+    }
+
+    @Test
+    fun `조회수 내림차순 게시물 리스트 조회`() {
+        val (memberList, boardTypeList) = createMemberListAndBoardType()
+
+        val member = memberList.first()
+        val boardType = boardTypeList.first()
+
+        val startHits = 1
+        val endHits = 9
+
+        for (i in startHits..endHits) {
+            boardRepository.save(
+                Board(
+                    subject = "$i$subject",
+                    content = "$i$content",
+                    member = member,
+                    boardType = boardType,
+                    hits = i
+                )
+            )
+        }
+
+        var boardList: List<Board> = boardRepositorySupport.orderByHits(Order.ASC)
+
+        assertThat(boardList).isNotEmpty
+        assertThat(boardList.size).isEqualTo(9)
+        assertThat(boardList.first().subject[0].toString()).isEqualTo(startHits.toString())
+        assertThat(boardList.first().content[0].toString()).isEqualTo(startHits.toString())
+
+        boardList = boardRepositorySupport.orderByHits(Order.DESC)
+
+        assertThat(boardList).isNotEmpty
+        assertThat(boardList.size).isEqualTo(9)
+        assertThat(boardList.first().subject[0].toString()).isEqualTo(endHits.toString())
+        assertThat(boardList.first().content[0].toString()).isEqualTo(endHits.toString())
+    }
+
+    @Test
+    fun `추천별 게시물 리스트 조회`() {
+        val (memberList, boardTypeList) = createMemberListAndBoardType()
+
+        val member = memberList.first()
+        val boardType = boardTypeList.first()
+
+        val startRecommend = 1
+        val endRecommend = 9
+
+        for (i in startRecommend..endRecommend) {
+            boardRepository.save(
+                Board(
+                    subject = "$i$subject",
+                    content = "$i$content",
+                    member = member,
+                    boardType = boardType,
+                    recommend = i
+                )
+            )
+        }
+
+        var boardList: List<Board> = boardRepositorySupport.orderByRecommend(Order.ASC)
+
+        assertThat(boardList).isNotEmpty
+        assertThat(boardList.size).isEqualTo(9)
+        assertThat(boardList.first().subject[0].toString()).isEqualTo(startRecommend.toString())
+        assertThat(boardList.first().content[0].toString()).isEqualTo(startRecommend.toString())
+
+        boardList = boardRepositorySupport.orderByRecommend(Order.DESC)
+
+        assertThat(boardList).isNotEmpty
+        assertThat(boardList.size).isEqualTo(9)
+        assertThat(boardList.first().subject[0].toString()).isEqualTo(endRecommend.toString())
+        assertThat(boardList.first().content[0].toString()).isEqualTo(endRecommend.toString())
     }
 
     @AfterEach
