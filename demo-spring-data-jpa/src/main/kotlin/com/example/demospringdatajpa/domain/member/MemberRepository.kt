@@ -5,5 +5,5 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor
 
 interface MemberRepository : JpaRepository<Member, Int>, QuerydslPredicateExecutor<Member> {
     fun findByEmail(email: String): Member?
-    fun findByName(name: String): Member?
+    fun findByName(name: String): List<Member>
 }

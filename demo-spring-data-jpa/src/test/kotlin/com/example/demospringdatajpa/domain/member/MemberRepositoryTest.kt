@@ -133,11 +133,14 @@ class MemberRepositoryTest {
         )
 
         // when
-        val member = memberRepository.findByName(name)
+        val memberList = memberRepository.findByName(name)
 
         // then
-        assertThat(member).isNotNull
-        assertThat(member!!.email).isEqualTo(email)
+        assertThat(memberList).isNotEmpty
+        assertThat(memberList.size).isEqualTo(1)
+
+        val member = memberList.first()
+        assertThat(member.email).isEqualTo(email)
         assertThat(member.name).isEqualTo(name)
         assertThat(member.password).isNotEqualTo(password)
         assertThat(member.verifyPassword(password)).isTrue
