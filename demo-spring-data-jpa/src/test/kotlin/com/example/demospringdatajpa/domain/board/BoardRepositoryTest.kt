@@ -4,29 +4,22 @@ import com.example.demospringdatajpa.domain.board.type.BoardType
 import com.example.demospringdatajpa.domain.board.type.BoardTypeRepository
 import com.example.demospringdatajpa.domain.member.Member
 import com.example.demospringdatajpa.domain.member.MemberRepository
-import com.querydsl.core.types.Order
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
-import javax.persistence.EntityManager
-import javax.persistence.PersistenceContext
 
 @SpringBootTest
 @Transactional
-class BoardRepositorySupportTest {
+class BoardRepositoryTest {
     @Autowired
     lateinit var memberRepository: MemberRepository
     @Autowired
     lateinit var boardTypeRepository: BoardTypeRepository
     @Autowired
     lateinit var boardRepository: BoardRepository
-    @Autowired
-    lateinit var boardRepositorySupport: BoardRepositorySupport
-    @PersistenceContext
-    lateinit var entityManager: EntityManager
 
     private val subject = "테스트 제목"
     private val content = "테스트 본문"
@@ -85,7 +78,7 @@ class BoardRepositorySupportTest {
         )
 
         // when
-        val boardList: List<Board> = boardRepositorySupport.findAll()
+        val boardList: List<Board> = boardRepository.findAll()
 
         // then
         assertThat(boardList).isNotEmpty
@@ -119,7 +112,7 @@ class BoardRepositorySupportTest {
             )
         )
 
-        val boardList = boardRepositorySupport.findAll()
+        val boardList = boardRepository.findAll()
         assertThat(boardList).isNotEmpty
         val board = boardList.first()
         assertThat(board.subject).isEqualTo(subject)
@@ -142,9 +135,11 @@ class BoardRepositorySupportTest {
 
         // then
         val boardId = board.id!!
-        val newBoard = boardRepositorySupport.findById(boardId)
-        assertThat(newBoard).isNotNull
-        assertThat(newBoard!!.subject).isEqualTo(newSubject)
+        val optionalNewBoard = boardRepository.findById(boardId)
+        assertThat(optionalNewBoard.isPresent).isTrue
+
+        val newBoard = optionalNewBoard.get()
+        assertThat(newBoard.subject).isEqualTo(newSubject)
         assertThat(newBoard.content).isEqualTo(newContent)
         assertThat(newBoard.boardType).isEqualTo(newBoardType)
         assertThat(newBoard).isEqualTo(board)
@@ -180,7 +175,7 @@ class BoardRepositorySupportTest {
             )
         )
 
-        var boardList = boardRepositorySupport.findAll()
+        var boardList = boardRepository.findAll()
         assertThat(boardList).isNotEmpty
         assertThat(boardList.size).isEqualTo(2)
         val board = boardList.first()
@@ -190,7 +185,7 @@ class BoardRepositorySupportTest {
         boardRepository.delete(board)
 
         // then
-        boardList = boardRepositorySupport.findAll()
+        boardList = boardRepository.findAll()
         assertThat(boardList).isNotEmpty
         assertThat(boardList.size).isEqualTo(1)
         assertThat(boardList.first()).isEqualTo(otherBoard)
@@ -218,7 +213,7 @@ class BoardRepositorySupportTest {
         }
 
         val firstMember = memberList.first()
-        val boardList: List<Board> = boardRepositorySupport.findByMember(firstMember)
+        val boardList: List<Board> = boardRepository.findByMember(firstMember)
 
         assertThat(boardList).isNotEmpty
         assertThat(boardList.size).isEqualTo(1)
@@ -251,7 +246,7 @@ class BoardRepositorySupportTest {
         }
 
         val firstBoardType = boardTypeList.first()
-        val boardList: List<Board> = boardRepositorySupport.findByBoardType(firstBoardType)
+        val boardList: List<Board> = boardRepository.findByBoardType(firstBoardType)
 
         assertThat(boardList).isNotEmpty
         assertThat(boardList.size).isEqualTo(1)
@@ -284,14 +279,14 @@ class BoardRepositorySupportTest {
             )
         }
 
-        var boardList: List<Board> = boardRepositorySupport.orderByHits(Order.ASC)
+        var boardList: List<Board> = boardRepository.findAllByOrderByHitsAsc()
 
         assertThat(boardList).isNotEmpty
         assertThat(boardList.size).isEqualTo(9)
         assertThat(boardList.first().subject[0].toString()).isEqualTo(startHits.toString())
         assertThat(boardList.first().content[0].toString()).isEqualTo(startHits.toString())
 
-        boardList = boardRepositorySupport.orderByHits(Order.DESC)
+        boardList = boardRepository.findAllByOrderByHitsDesc()
 
         assertThat(boardList).isNotEmpty
         assertThat(boardList.size).isEqualTo(9)
@@ -321,14 +316,14 @@ class BoardRepositorySupportTest {
             )
         }
 
-        var boardList: List<Board> = boardRepositorySupport.orderByRecommend(Order.ASC)
+        var boardList: List<Board> = boardRepository.findAllByOrderByRecommendAsc()
 
         assertThat(boardList).isNotEmpty
         assertThat(boardList.size).isEqualTo(9)
         assertThat(boardList.first().subject[0].toString()).isEqualTo(startRecommend.toString())
         assertThat(boardList.first().content[0].toString()).isEqualTo(startRecommend.toString())
 
-        boardList = boardRepositorySupport.orderByRecommend(Order.DESC)
+        boardList = boardRepository.findAllByOrderByRecommendDesc()
 
         assertThat(boardList).isNotEmpty
         assertThat(boardList.size).isEqualTo(9)

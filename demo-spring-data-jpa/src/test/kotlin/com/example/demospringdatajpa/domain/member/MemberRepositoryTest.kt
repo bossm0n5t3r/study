@@ -106,7 +106,7 @@ class MemberRepositoryTest {
     }
 
     @Test
-    fun `JpaRepository - findByName`() {
+    fun `JpaRepository - findAllByName`() {
         // given
         val email = "test@test.test"
         val password = "password"
@@ -133,7 +133,7 @@ class MemberRepositoryTest {
         )
 
         // when
-        val memberList = memberRepository.findByName(name)
+        val memberList = memberRepository.findAllByName(name)
 
         // then
         assertThat(memberList).isNotEmpty

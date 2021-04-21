@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @SpringBootTest
 @Transactional
-class CommentRepositorySupportTest {
+class CommentRepositoryTest {
     @Autowired
     lateinit var memberRepository: MemberRepository
     @Autowired
@@ -24,8 +24,6 @@ class CommentRepositorySupportTest {
     lateinit var boardRepository: BoardRepository
     @Autowired
     lateinit var commentRepository: CommentRepository
-    @Autowired
-    lateinit var commentRepositorySupport: CommentRepositorySupport
 
     private val commentContent = "기본 댓글"
 
@@ -92,7 +90,7 @@ class CommentRepositorySupportTest {
             )
         }
 
-        val commentList: List<Comment> = commentRepositorySupport.findAll()
+        val commentList: List<Comment> = commentRepository.findAll()
 
         assertThat(commentList).isNotEmpty
         assertThat(commentList.size).isEqualTo(numberOfComment)
@@ -117,7 +115,7 @@ class CommentRepositorySupportTest {
         }
 
         val firstMember = memberList.first()
-        val commentList: List<Comment> = commentRepositorySupport.findByMember(firstMember)
+        val commentList: List<Comment> = commentRepository.findAllByMember(firstMember)
 
         assertThat(commentList).isNotEmpty
         assertThat(commentList.size).isEqualTo(1)
@@ -141,7 +139,7 @@ class CommentRepositorySupportTest {
             )
         )
 
-        var commentList = commentRepositorySupport.findAll()
+        var commentList = commentRepository.findAll()
         assertThat(commentList).isNotEmpty
         assertThat(commentList.size).isEqualTo(1)
         assertThat(commentList[0].content).isEqualTo(commentContent)
@@ -153,7 +151,7 @@ class CommentRepositorySupportTest {
             UpdateCommentDto(content = newCommentContent)
         )
 
-        commentList = commentRepositorySupport.findAll()
+        commentList = commentRepository.findAll()
         assertThat(commentList).isNotEmpty
         assertThat(commentList.size).isEqualTo(1)
         assertThat(commentList[0].content).isNotEqualTo(commentContent)
