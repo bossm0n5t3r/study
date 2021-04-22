@@ -1,9 +1,9 @@
 package com.example.demospringdatajpa.domain.comment
 
-import com.example.demospringdatajpa.domain.board.Board
-import com.example.demospringdatajpa.domain.board.BoardRepository
-import com.example.demospringdatajpa.domain.board.type.BoardType
-import com.example.demospringdatajpa.domain.board.type.BoardTypeRepository
+import com.example.demospringdatajpa.domain.article.Article
+import com.example.demospringdatajpa.domain.article.ArticleRepository
+import com.example.demospringdatajpa.domain.article.type.ArticleType
+import com.example.demospringdatajpa.domain.article.type.ArticleTypeRepository
 import com.example.demospringdatajpa.domain.member.Member
 import com.example.demospringdatajpa.domain.member.MemberRepository
 import org.assertj.core.api.Assertions.assertThat
@@ -19,15 +19,15 @@ class CommentRepositoryTest {
     @Autowired
     lateinit var memberRepository: MemberRepository
     @Autowired
-    lateinit var boardTypeRepository: BoardTypeRepository
+    lateinit var articleTypeRepository: ArticleTypeRepository
     @Autowired
-    lateinit var boardRepository: BoardRepository
+    lateinit var articleRepository: ArticleRepository
     @Autowired
     lateinit var commentRepository: CommentRepository
 
     private val commentContent = "기본 댓글"
 
-    private fun createMemberAndBoardTypeAndBoard(case: Int = 1): Pair<List<Member>, List<Board>> {
+    private fun createMemberAndArticleTypeAndArticle(case: Int = 1): Pair<List<Member>, List<Article>> {
         // member
         val email = "test@test.test"
         val password = "password"
@@ -43,48 +43,48 @@ class CommentRepositoryTest {
             )
         }
 
-        val boardTypeName = "공지"
-        boardTypeRepository.save(
-            BoardType(name = boardTypeName)
+        val articleTypeName = "공지"
+        articleTypeRepository.save(
+            ArticleType(name = articleTypeName)
         )
 
         val memberList = memberRepository.findAll().toList()
         val member = memberList.first()
-        val boardType = boardTypeRepository.findAll().first()
+        val articleType = articleTypeRepository.findAll().first()
 
         val subject = "테스트 제목"
         val content = "테스트 본문"
 
         memberList.forEach {
             val index = it.email[0].toString()
-            boardRepository.save(
-                Board(
+            articleRepository.save(
+                Article(
                     subject = "$index$subject",
                     content = "$index$content",
                     member = member,
-                    boardType = boardType
+                    articleType = articleType
                 )
             )
         }
 
-        val boardList = boardRepository.findAll()
+        val articleList = articleRepository.findAll()
 
-        return Pair(memberList, boardList)
+        return Pair(memberList, articleList)
     }
 
     @Test
     fun findAll() {
-        val (memberList, boardList) = createMemberAndBoardTypeAndBoard()
+        val (memberList, articleList) = createMemberAndArticleTypeAndArticle()
 
         val member = memberList.first()
-        val board = boardList.first()
+        val article = articleList.first()
 
         val numberOfComment = 9
         for (i in 1..numberOfComment) {
             commentRepository.save(
                 Comment(
                     content = "$commentContent$i",
-                    board = board,
+                    article = article,
                     member = member
                 )
             )
@@ -99,16 +99,16 @@ class CommentRepositoryTest {
     @Test
     fun findByMember() {
         val case = 10
-        val (memberList, boardList) = createMemberAndBoardTypeAndBoard(case = case)
+        val (memberList, articleList) = createMemberAndArticleTypeAndArticle(case = case)
 
-        val board = boardList.first()
+        val article = articleList.first()
 
         memberList.forEach {
             val index = it.email[0].toString()
             commentRepository.save(
                 Comment(
                     content = "$index$commentContent",
-                    board = board,
+                    article = article,
                     member = it
                 )
             )
@@ -126,15 +126,15 @@ class CommentRepositoryTest {
 
     @Test
     fun updateCommentContent() {
-        val (memberList, boardList) = createMemberAndBoardTypeAndBoard()
+        val (memberList, articleList) = createMemberAndArticleTypeAndArticle()
 
         val member = memberList.first()
-        val board = boardList.first()
+        val article = articleList.first()
 
         commentRepository.save(
             Comment(
                 content = commentContent,
-                board = board,
+                article = article,
                 member = member
             )
         )
@@ -162,8 +162,8 @@ class CommentRepositoryTest {
     @AfterEach
     fun cleanUp() {
         commentRepository.deleteAll()
-        boardRepository.deleteAll()
-        boardTypeRepository.deleteAll()
+        articleRepository.deleteAll()
+        articleTypeRepository.deleteAll()
         memberRepository.deleteAll()
     }
 }

@@ -1,7 +1,7 @@
 package com.example.demospringdatajpa.domain.comment
 
 import com.example.demospringdatajpa.domain.BaseEntity
-import com.example.demospringdatajpa.domain.board.Board
+import com.example.demospringdatajpa.domain.article.Article
 import com.example.demospringdatajpa.domain.member.Member
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -16,8 +16,8 @@ class Comment(
     content: String,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id", nullable = false, updatable = false)
-    var board: Board,
+    @JoinColumn(name = "article_id", nullable = false, updatable = false)
+    var article: Article,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false, updatable = false)
