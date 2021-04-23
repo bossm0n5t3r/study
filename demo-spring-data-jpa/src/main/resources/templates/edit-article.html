@@ -1,0 +1,160 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Forum - Free Bulma template</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+				integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+	<!-- Bulma Version 0.9.1-->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/forum.css}">
+</head>
+<body>
+<nav class="navbar is-white topNav">
+	<div class="container">
+		<div class="navbar-brand">
+			<a class="navbar-item" href="../">
+				<img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+			</a>
+			<div class="navbar-burger burger" data-target="topNav">
+				<span></span>
+				<span></span>
+				<span></span>
+			</div>
+		</div>
+		<div id="topNav" class="navbar-menu">
+			<div class="navbar-start">
+				<a class="navbar-item" href="cover.html">Home</a>
+				<a class="navbar-item" href="landing.html">Landing</a>
+				<a class="navbar-item" href="blog.html">Blog</a>
+				<a class="navbar-item" href="instaAlbum.html">Album</a>
+				<a class="navbar-item" href="kanban[search].html">Kanban</a>
+				<a class="navbar-item" href="search.html">Search</a>
+				<a class="navbar-item" href="tabs.html">Tabs</a>
+			</div>
+			<div class="navbar-end">
+				<div class="navbar-item">
+					<div class="field is-grouped">
+						<p class="control">
+							<a class="button is-small">
+										<span class="icon">
+											<i class="fa fa-user-plus"></i>
+										</span>
+								<span>
+											Register
+										</span>
+							</a>
+						</p>
+						<p class="control">
+							<a class="button is-small is-info is-outlined">
+										<span class="icon">
+											<i class="fa fa-user"></i>
+										</span>
+								<span>Login</span>
+							</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</nav>
+<nav class="navbar is-white">
+	<div class="container">
+		<div class="navbar-menu">
+			<div class="navbar-start">
+				<a class="navbar-item is-active" href="#">Popular</a>
+				<a class="navbar-item" href="#">Recent</a>
+				<a class="navbar-item" href="#">Rising</a>
+			</div>
+			<div class="navbar-end">
+				<div class="navbar-item">
+					<input class="input" type="search" placeholder="Search forum...">
+				</div>
+			</div>
+		</div>
+	</div>
+</nav>
+<section class="container">
+	<div class="columns">
+		<div class="column is-3">
+			<a class="button is-primary is-block is-alt is-large" href="#">New Post</a>
+			<aside class="menu">
+				<p class="menu-label">
+					Tags
+				</p>
+				<ul class="menu-list">
+					<li><span class="tag is-primary is-medium ">Dashboard</span></li>
+					<li><span class="tag is-link is-medium ">Customers</span></li>
+					<li><span class="tag is-light is-danger is-medium ">Authentication</span></li>
+					<li><span class="tag is-dark is-medium ">Payments</span></li>
+					<li><span class="tag is-success is-medium ">Transfers</span></li>
+					<li><span class="tag is-warning is-medium ">Balance</span></li>
+					<li><span class="tag is-medium ">Question</span></li>
+				</ul>
+			</aside>
+		</div>
+		<div class="column is-9">
+			<div class="box content">
+				<!-- article type -->
+				<div class="dropdown m-2 is-hoverable is-fullwidth">
+					<div class="dropdown-trigger">
+						<button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+							<span>게시물 타입</span>
+						</button>
+					</div>
+					<div class="dropdown-menu" id="dropdown-menu4" role="menu">
+						<div class="dropdown-content">
+							<div class="dropdown-item">
+								<p>You can insert <strong>any type of content</strong> within the dropdown menu.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 제목 -->
+				<input class="input m-2 is-fullwidth" type="text" placeholder="제목">
+				<!-- 본문 -->
+				<textarea class="textarea m-2" placeholder="본문" rows="15"></textarea>
+				<!-- 버튼들 -->
+				<div class="buttons is-justify-content-flex-end">
+					<!-- 취소 버튼 -->
+					<button class="button m-2 is-danger is-outlined">
+						취소하기
+					</button>
+					<!-- 수정 버튼 -->
+					<button class="button m-2 is-success">
+						수정하기
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<footer class="footer">
+	<div class="container">
+		<div class="content has-text-centered">
+			<div class="columns is-mobile is-centered">
+				<div class="field is-grouped is-grouped-multiline">
+					<div class="control">
+						<div class="tags has-addons">
+							<a class="tag is-link" href="https://github.com/BulmaTemplates/bulma-templates">Bulma Templates</a>
+							<span class="tag is-light">Daniel Supernault</span>
+						</div>
+					</div>
+					<div class="control">
+						<div class="tags has-addons">
+							<a class="tag is-link">The source code is licensed</a>
+							<span class="tag is-light">MIT &nbsp;<i class="fa fa-github"></i></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<script async type="text/javascript" th:href="@{/js/forum.js}"></script>
+</body>
+</html>
