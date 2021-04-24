@@ -6,13 +6,18 @@ import org.springframework.web.bind.annotation.GetMapping
 
 @Controller
 class ArticleController {
+    @GetMapping("/")
+    fun index(model: Model): String {
+        return "index"
+    }
+
     @GetMapping("/write")
-    fun write(model: Model): String {
+    fun writeArticle(model: Model): String {
         return "write-article"
     }
 
     @GetMapping("/edit")
-    fun edit(model: Model): String {
+    fun editArticle(model: Model): String {
         return "edit-article"
     }
 }
