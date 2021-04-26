@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping
 @Controller
 class SignUpController {
     @GetMapping("/SignUp")
-    fun signUp(model: Model): String {
+    fun signUpPage(model: Model): String {
         return "sign-up"
     }
 }
