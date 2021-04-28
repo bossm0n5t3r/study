@@ -5,11 +5,9 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.transaction.annotation.Transactional
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 
-@SpringBootTest
-@Transactional
+@DataJpaTest
 class MemberRepositoryTest {
     @Autowired
     lateinit var memberRepository: MemberRepository
