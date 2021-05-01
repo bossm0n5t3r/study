@@ -4,6 +4,7 @@ val querydslVersion: String by project
 val hikariVersion: String by project
 val commonsCodecVersion: String by project
 val guavaVersion: String by project
+val zxcvbnVersion: String by project
 
 plugins {
     val kotlinVersion = "1.4.31"
@@ -65,6 +66,8 @@ dependencies {
     implementation("org.mariadb.jdbc:mariadb-java-client")
     // HikariCP
     implementation("com.zaxxer:HikariCP:$hikariVersion")
+    // zxcvbn
+    implementation("com.nulab-inc:zxcvbn:$zxcvbnVersion")
 
     implementation("commons-codec:commons-codec:$commonsCodecVersion")
     implementation("com.google.guava:guava:$guavaVersion")
