@@ -9,7 +9,8 @@
   "author": "bossm0n5t3r",
   "license": "MIT",
   "dependencies": {
-    "@notionhq/client": "^0.1.3"
+    "@notionhq/client": "^0.1.3",
+    "dotenv": "^9.0.2"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.24.0",

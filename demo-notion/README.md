@@ -7,7 +7,7 @@ markdown 파일을 notion 문서로 어떻게, 잘, 예쁘게 변환해서 만�
 ## TO-DO
 
 - [x] eslint 추가
-- [ ] dotenv 추가
+- [x] dotenv 추가
 - [ ] 임의의 내용으로 기본적인 notion 문서 생성
 - [ ] target 폴더의 markdown 문서를 제대로 읽어보기
 - [ ] target 폴더의 markdown 문서를 기본적인 notion 문서로 생성
