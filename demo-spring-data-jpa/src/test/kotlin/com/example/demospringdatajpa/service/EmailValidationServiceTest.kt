@@ -2,6 +2,7 @@ package com.example.demospringdatajpa.service
 
 import com.example.demospringdatajpa.domain.member.Member
 import com.example.demospringdatajpa.domain.member.MemberRepository
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName
@@ -69,5 +70,10 @@ class EmailValidationServiceTest {
 
         assertTrue(emailValidationService.isAlreadySignedUpEmail(email))
         assertFalse(emailValidationService.isAlreadySignedUpEmail(newEmail))
+    }
+
+    @AfterEach
+    fun cleanUp() {
+        memberRepository.deleteAll()
     }
 }
