@@ -1,0 +1,14 @@
+{
+  "name": "demo-notion",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "start": "node index.ts"
+  },
+  "repository": "git@zhoon.github.com:bossm0n5t3r/study.git",
+  "author": "bossm0n5t3r",
+  "license": "MIT",
+  "dependencies": {
+    "@notionhq/client": "^0.1.3"
+  }
+}
